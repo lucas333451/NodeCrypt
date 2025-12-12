@@ -1866,19 +1866,21 @@ h2{
 .login-container {
 	min-height: 100vh;
 	display: flex;
-	align-items: center;
+	align-items: flex-start;
 	justify-content: center;
 	background: radial-gradient(circle at 20% 20%, rgba(59,130,246,0.12), transparent 25%),
 		radial-gradient(circle at 80% 0%, rgba(99,102,241,0.12), transparent 25%),
 		linear-gradient(135deg, #0f172a, #0b1220 35%, #0f172a);
-	padding: 40px 12px;
+	padding: 56px 16px 64px;
+	overflow-y: auto;
 }
 
 .flip-card {
 	background: transparent;
 	width: 100%;
-	max-width: 520px;
+	max-width: 560px;
 	box-shadow: none;
+	margin: 0 auto;
 }
 
 .flip-card-front, .flip-card-back {
@@ -1907,7 +1909,7 @@ h2{
 
 .login-card {
 	width: 100%;
-	padding: 36px 34px 46px;
+	padding: 40px 36px 52px;
 	position: relative;
 	z-index: 1;
 }
@@ -2026,4 +2028,13 @@ h2{
 @media (max-width: 600px) {
 	.login-card { padding: 28px 24px 36px; }
 	.login-title { font-size: 24px; }
+	.login-container {
+		padding: 32px 12px 40px;
+		align-items: flex-start;
+	}
+}
+
+/* ensure scrolling is allowed on login page */
+body.login-page {
+	overflow-y: auto;
 }
