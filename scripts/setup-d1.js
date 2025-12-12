@@ -13,6 +13,7 @@ const PLACEHOLDER = 'REPLACE_WITH_D1_ID';
 const ACCOUNT_PLACEHOLDER = 'REPLACE_WITH_ACCOUNT_ID';
 const ENV_ID = process.env.D1_ID || process.env.D1_DATABASE_ID;
 const ENV_ACCOUNT_ID = process.env.ACCOUNT_ID || process.env.CF_ACCOUNT_ID;
+const ENV_LOCATION = process.env.D1_LOCATION || 'weur'; // default region hint
 
 function log(msg) {
   console.log(`[setup-d1] ${msg}`);
@@ -59,8 +60,8 @@ function main() {
   log('Placeholder detected; creating D1 database...');
   let output = '';
   try {
-    // Request JSON output for easy parsing
-    output = run(`${WRANGLER} d1 create nodecrypt-db --json`);
+    // Older wrangler may not support --json; use plain text and regex
+    output = run(`${WRANGLER} d1 create nodecrypt-db --location ${ENV_LOCATION}`);
   } catch (err) {
     console.error('Failed to create D1 database');
     if (err.stdout) console.error('stdout:', err.stdout);
@@ -68,14 +69,9 @@ function main() {
     throw err;
   }
 
-  let json;
-  try {
-    json = JSON.parse(output);
-  } catch (err) {
-    throw new Error(`Cannot parse wrangler output: ${output}`);
-  }
-
-  const dbId = json?.uuid || json?.database?.uuid || json?.database_id;
+  // Try to extract UUID from output
+  const match = output.match(/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/i);
+  const dbId = match && match[0];
   if (!dbId) {
     throw new Error(`database_id not found in wrangler output: ${output}`);
   }
