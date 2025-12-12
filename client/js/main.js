@@ -104,6 +104,7 @@ window.setupEmojiPicker = setupEmojiPicker;
 window.handleFileMessage = handleFileMessage;
 window.downloadFile = downloadFile;
 window.handleAuthSubmit = handleAuthSubmit;
+window.setupAuthModeToggle = setupAuthModeToggle;
 
 // Setup send-code buttons for email verification
 function setupSendCodeButtons() {
@@ -202,6 +203,22 @@ async function handleAuthSubmit({ userName, roomName, password, email, code, aut
 	}
 }
 
+// Toggle node section visibility based on auth mode
+function setupAuthModeToggle() {
+	const select = document.querySelector('#authMode') || document.querySelector('#authMode-modal');
+	const update = () => {
+		const mode = select ? select.value : 'login';
+		const section = document.querySelector('.node-section');
+		if (section) {
+			section.style.display = mode === 'register' ? 'block' : 'none';
+		}
+	};
+	if (select) {
+		select.addEventListener('change', update);
+		update();
+	}
+}
+
 // 当 DOM 内容加载完成后执行初始化逻辑
 // Run initialization logic when the DOM content is fully loaded
 window.addEventListener('DOMContentLoaded', () => {
@@ -214,6 +231,8 @@ window.addEventListener('DOMContentLoaded', () => {
 	// 初始化登录表单 / Initialize login form
 	initLoginForm();
 	setupSendCodeButtons();
+	setupAuthModeToggle();
+	setupAuthModeToggle();
 
 	const loginForm = $id('login-form');               // 登录表单 / Login form
 

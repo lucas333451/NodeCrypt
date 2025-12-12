@@ -428,6 +428,21 @@ export function loginFormHandler(modal) {
 			btn = document.querySelector('#login-form .login-btn');
 			roomInput = document.getElementById('roomName')
 		}
+
+		// If登录模式且未填写节点，先展开节点区域提示填写
+		const nodeSection = document.querySelector('.node-section');
+		if (authMode === 'login' && (!roomName || !password)) {
+			if (nodeSection) {
+				nodeSection.style.display = 'block';
+			}
+			window.addSystemMsg && window.addSystemMsg(t('system.node_required', '请先填写节点名称/密码以进入房间'));
+			if (btn) {
+				btn.disabled = false;
+				btn.innerText = t('ui.enter', 'ENTER');
+			}
+			return;
+		}
+
 		const exists = roomsData.some(rd => rd.roomName && rd.roomName.toLowerCase() === roomName.toLowerCase());
 		if (roomInput) {
 			roomInput.style.border = '';
@@ -477,35 +492,44 @@ export function loginFormHandler(modal) {
 // Generate login form HTML
 export function generateLoginForm(isModal = false) {
 	const idPrefix = isModal ? '-modal' : '';
-	return `		<div class="input-group">
-			<input id="userName${idPrefix}" type="text" autocomplete="username" required minlength="1" maxlength="15" placeholder="">
-			<label for="userName${idPrefix}" class="floating-label">${t('ui.username', 'Username')}</label>
-		</div>
-		<div class="input-group">
-			<input id="email${idPrefix}" type="email" autocomplete="email" placeholder="">
-			<label for="email${idPrefix}" class="floating-label">${t('ui.email', 'Email (for account)')}</label>
-		</div>
-		<div class="input-group">
-			<div class="input-with-btn">
-				<input id="emailCode${idPrefix}" type="text" inputmode="numeric" pattern="[0-9]*" placeholder="">
-				<button type="button" class="send-code-btn" data-prefix="${idPrefix}">${t('ui.send_code', 'Send Code')}</button>
+	return `
+		<div class="form-section">
+			<div class="section-title">${t('ui.account_verify', '账号验证')}</div>
+			<div class="input-group">
+				<input id="userName${idPrefix}" type="text" autocomplete="username" required minlength="1" maxlength="15" placeholder="">
+				<label for="userName${idPrefix}" class="floating-label">${t('ui.username', 'Username')}</label>
 			</div>
-			<label for="emailCode${idPrefix}" class="floating-label">${t('ui.email_code', 'Email Code')}</label>
+			<div class="input-group">
+				<input id="email${idPrefix}" type="email" autocomplete="email" placeholder="">
+				<label for="email${idPrefix}" class="floating-label">${t('ui.email', 'Email (for account)')}</label>
+			</div>
+			<div class="input-group">
+				<div class="input-with-btn">
+					<input id="emailCode${idPrefix}" type="text" inputmode="numeric" pattern="[0-9]*" placeholder="">
+					<button type="button" class="send-code-btn" data-prefix="${idPrefix}">${t('ui.send_code', 'Send Code')}</button>
+				</div>
+				<label for="emailCode${idPrefix}" class="floating-label">${t('ui.email_code', 'Email Code')}</label>
+			</div>
 		</div>
-		<div class="input-group">
-			<label class="select-label" for="authMode${idPrefix}">${t('ui.auth_mode', 'Auth Mode')}</label>
-			<select id="authMode${idPrefix}">
-				<option value="login">${t('ui.login', 'Login')}</option>
-				<option value="register">${t('ui.register', 'Register')}</option>
-			</select>
+		<div class="form-section">
+			<div class="section-title">${t('ui.auth_mode', 'Auth Mode')}</div>
+			<div class="input-group">
+				<select id="authMode${idPrefix}">
+					<option value="login">${t('ui.login', 'Login')}</option>
+					<option value="register">${t('ui.register', 'Register')}</option>
+				</select>
+			</div>
 		</div>
-		<div class="input-group">
-			<input id="roomName${idPrefix}" type="text" required minlength="1" maxlength="15" placeholder="">
-			<label for="roomName${idPrefix}" class="floating-label">${t('ui.node_name', 'Node Name')}</label>
-		</div>
-		<div class="input-group">
-			<input id="password${idPrefix}" type="password" autocomplete="${isModal ? 'off' : 'current-password'}" minlength="1" maxlength="15" placeholder="">
-			<label for="password${idPrefix}" class="floating-label">${t('ui.node_password', 'Node Password')} <span class="optional">${t('ui.optional', '(optional)')}</span></label>
+		<div class="form-section node-section" style="display:none">
+			<div class="section-title">${t('ui.node_info', '节点信息')}</div>
+			<div class="input-group">
+				<input id="roomName${idPrefix}" type="text" minlength="1" maxlength="15" placeholder="">
+				<label for="roomName${idPrefix}" class="floating-label">${t('ui.node_name', 'Node Name')}</label>
+			</div>
+			<div class="input-group">
+				<input id="password${idPrefix}" type="password" autocomplete="${isModal ? 'off' : 'current-password'}" minlength="1" maxlength="15" placeholder="">
+				<label for="password${idPrefix}" class="floating-label">${t('ui.node_password', 'Node Password')} <span class="optional">${t('ui.optional', '(optional)')}</span></label>
+			</div>
 		</div>
 		<button type="submit" class="login-btn">${t('ui.enter', 'ENTER')}</button>
 	`;
