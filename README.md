@@ -83,7 +83,7 @@ NodeCrypt 是一个真正的端到端加密聊天系统，采用零知识架构�
    database_id = "<你的 database_id>"
    ```
    也可以在部署环境里设置环境变量 `D1_ID`（或 `D1_DATABASE_ID`），脚本会自动用该值替换占位符。
-   同理 `account_id` 占位符可用 `ACCOUNT_ID`/`CF_ACCOUNT_ID` 环境变量自动填充；可选 `D1_LOCATION`（默认 weur）。
+   同理 `account_id` 占位符可用 `ACCOUNT_ID`/`CF_ACCOUNT_ID` 环境变量自动填充；若未设置，脚本会尝试 `wrangler whoami --json` 自动发现。可选 `D1_LOCATION`（默认 weur）。
 4) 初始化表结构  
    ```bash
    npm run d1:schema   # 等同 wrangler d1 execute nodecrypt-db --file=worker/db-schema.sql

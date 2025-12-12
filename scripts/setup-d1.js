@@ -33,14 +33,40 @@ function main() {
   }
   const toml = fs.readFileSync(TOML_PATH, 'utf8');
 
-  // Fill account_id if placeholder present and env provided
+  // Fill account_id if placeholder present
   if (toml.includes(ACCOUNT_PLACEHOLDER)) {
-    if (ENV_ACCOUNT_ID) {
-      const updated = toml.replace(ACCOUNT_PLACEHOLDER, ENV_ACCOUNT_ID.trim());
+    let accountId = ENV_ACCOUNT_ID && ENV_ACCOUNT_ID.trim();
+
+    // Try wrangler whoami --json as fallback to discover account id
+    if (!accountId) {
+      try {
+        const whoami = run(`${WRANGLER} whoami --json`);
+        try {
+          const info = JSON.parse(whoami);
+          accountId =
+            info.account_id ||
+            info.account?.id ||
+            (Array.isArray(info.accounts) && info.accounts[0]?.id) ||
+            (Array.isArray(info.accounts) && info.accounts[0]?.account_id);
+          if (accountId) {
+            log(`Discovered account_id via wrangler whoami: ${accountId}`);
+          }
+        } catch (err) {
+          console.error('Failed to parse wrangler whoami output:', err);
+        }
+      } catch (err) {
+        console.error('wrangler whoami failed; set ACCOUNT_ID env to skip this.', err.stdout || err.message);
+      }
+    }
+
+    if (accountId) {
+      const updated = toml.replace(ACCOUNT_PLACEHOLDER, accountId);
       fs.writeFileSync(TOML_PATH, updated, 'utf8');
-      log(`Injected ACCOUNT_ID=${ENV_ACCOUNT_ID.trim()} into wrangler.toml`);
+      log(`Injected ACCOUNT_ID=${accountId} into wrangler.toml`);
     } else {
-      log(`WARNING: wrangler.toml has account_id placeholder. Set env ACCOUNT_ID or CF_ACCOUNT_ID to fill automatically.`);
+      log(
+        `WARNING: wrangler.toml has account_id placeholder. Set env ACCOUNT_ID/CF_ACCOUNT_ID or ensure 'wrangler whoami --json' works.`
+      );
     }
   }
 
