@@ -92,7 +92,7 @@ NodeCrypt 是一个真正的端到端加密聊天系统，采用零知识架构�
    ```bash
    wrangler secret put MAIL_FROM   # 例如 no-reply@yourdomain.com，域名需 SPF/DKIM
    ```
-6) 登录并部署（`npm run deploy` 会自动创建 D1/写入 ID/跑 schema 后再 deploy；若 ID 已设置则跳过创建）  
+6) 登录并部署（`npm run deploy` 会自动填写 account_id、创建/写入 D1 ID/跑 schema 后再 deploy；若 ID 已设置则跳过创建）  
    ```bash
    wrangler login
    npm run deploy
