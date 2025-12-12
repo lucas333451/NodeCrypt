@@ -20,6 +20,9 @@ function run(cmd) {
   return execSync(cmd, { stdio: 'pipe', encoding: 'utf8' });
 }
 
+// Prefer local wrangler via npx to avoid global dependency issues
+const WRANGLER = process.platform === 'win32' ? 'npx wrangler.cmd' : 'npx wrangler';
+
 function main() {
   if (!fs.existsSync(TOML_PATH)) {
     throw new Error('wrangler.toml not found');
@@ -35,7 +38,7 @@ function main() {
   let output = '';
   try {
     // Request JSON output for easy parsing
-    output = run('wrangler d1 create nodecrypt-db --json');
+    output = run(`${WRANGLER} d1 create nodecrypt-db --json`);
   } catch (err) {
     console.error(err.stdout || err.message);
     throw new Error('Failed to create D1 database');
