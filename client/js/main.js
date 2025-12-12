@@ -205,18 +205,24 @@ async function handleAuthSubmit({ userName, roomName, password, email, code, aut
 
 // Toggle node section visibility based on auth mode
 function setupAuthModeToggle() {
-	const select = document.querySelector('#authMode') || document.querySelector('#authMode-modal');
+	const selects = document.querySelectorAll('.auth-mode-select');
 	const update = () => {
-		const mode = select ? select.value : 'login';
-		const section = document.querySelector('.node-section');
-		if (section) {
-			section.style.display = mode === 'register' ? 'block' : 'none';
-		}
+		let mode = 'login';
+		selects.forEach(sel => {
+			if (sel && sel.value) mode = sel.value;
+		});
+		document.querySelectorAll('.node-section').forEach(section => {
+			if (mode === 'register') {
+				section.classList.remove('hidden');
+				section.style.display = 'block';
+			} else {
+				section.classList.add('hidden');
+				section.style.display = 'none';
+			}
+		});
 	};
-	if (select) {
-		select.addEventListener('change', update);
-		update();
-	}
+	selects.forEach(sel => sel.addEventListener('change', update));
+	update();
 }
 
 // 当 DOM 内容加载完成后执行初始化逻辑

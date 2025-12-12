@@ -1871,14 +1871,14 @@ h2{
 	background: radial-gradient(circle at 20% 20%, rgba(59,130,246,0.12), transparent 25%),
 		radial-gradient(circle at 80% 0%, rgba(99,102,241,0.12), transparent 25%),
 		linear-gradient(135deg, #0f172a, #0b1220 35%, #0f172a);
-	padding: 56px 16px 64px;
+	padding: 64px 18px 72px;
 	overflow-y: auto;
 }
 
 .flip-card {
 	background: transparent;
 	width: 100%;
-	max-width: 560px;
+	max-width: 720px;
 	box-shadow: none;
 	margin: 0 auto;
 }
@@ -1909,14 +1909,14 @@ h2{
 
 .login-card {
 	width: 100%;
-	padding: 40px 36px 52px;
+	padding: 52px 44px 60px;
 	position: relative;
 	z-index: 1;
 }
 
 .login-title {
-	margin: 6px 0 20px;
-	font-size: 28px;
+	margin: 6px 0 28px;
+	font-size: 32px;
 	text-align: center;
 	font-weight: 800;
 	color: #e2e8f0;
@@ -1925,7 +1925,7 @@ h2{
 .login-card .login-form {
 	display: flex;
 	flex-direction: column;
-	gap: 14px;
+	gap: 18px;
 }
 
 .input-group input,

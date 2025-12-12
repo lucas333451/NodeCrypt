@@ -514,13 +514,13 @@ export function generateLoginForm(isModal = false) {
 		<div class="form-section">
 			<div class="section-title">${t('ui.auth_mode', 'Auth Mode')}</div>
 			<div class="input-group">
-				<select id="authMode${idPrefix}">
+				<select id="authMode${idPrefix}" class="auth-mode-select">
 					<option value="login">${t('ui.login', 'Login')}</option>
 					<option value="register">${t('ui.register', 'Register')}</option>
 				</select>
 			</div>
 		</div>
-		<div class="form-section node-section" style="display:none">
+		<div class="form-section node-section hidden">
 			<div class="section-title">${t('ui.node_info', '节点信息')}</div>
 			<div class="input-group">
 				<input id="roomName${idPrefix}" type="text" minlength="1" maxlength="15" placeholder="">
