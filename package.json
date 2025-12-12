@@ -8,7 +8,10 @@
     "dev": " wrangler dev",
     "deploy": " wrangler deploy",
     "publish": " wrangler publish",
-    "build:docker": "vite build"
+    "build:docker": "vite build",
+    "d1:create": "wrangler d1 create nodecrypt-db",
+    "d1:schema": "wrangler d1 execute nodecrypt-db --file=worker/db-schema.sql",
+    "deploy:auto": "node scripts/setup-d1.js && npm run d1:schema && wrangler deploy"
   },
   "repository": {
     "type": "git",

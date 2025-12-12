@@ -66,14 +66,25 @@ NodeCrypt 是一个真正的端到端加密聊天系统，采用零知识架构�
    npm install
    npm run build
    ```
-2) 创建 D1 数据库并记录 `database_id`  
+2) 创建 D1 数据库并拿到 `database_id`（必须先做这一步）  
    ```bash
-   wrangler d1 create nodecrypt-db
+   npm run d1:create   # 等同 wrangler d1 create nodecrypt-db
    ```
-3) 将 `wrangler.toml` 的 `d1_databases` 替换为你的 `database_id`
-4) 应用表结构（`worker/db-schema.sql`）  
+   如果 `wrangler.toml` 里还保留占位符 `REPLACE_WITH_D1_ID`，可用“全自动”部署脚本自动创建并写入：  
    ```bash
-   wrangler d1 execute nodecrypt-db --file=worker/db-schema.sql
+   npm run deploy:auto   # 自动创建 D1（若占位符存在）-> 应用 schema -> deploy
+   ```
+   若已写入真实 ID，则跳过这一步。
+3) 编辑 `wrangler.toml`，把 `database_id` 替换成上一步的真实 ID（若使用 deploy:auto 且存在占位符，会自动完成）：  
+   ```toml
+   [[d1_databases]]
+   binding = "DB"
+   database_name = "nodecrypt-db"
+   database_id = "<你的 database_id>"
+   ```
+4) 初始化表结构  
+   ```bash
+   npm run d1:schema   # 等同 wrangler d1 execute nodecrypt-db --file=worker/db-schema.sql
    ```
 5) 设置邮件发件人（MailChannels）  
    ```bash
@@ -82,7 +93,7 @@ NodeCrypt 是一个真正的端到端加密聊天系统，采用零知识架构�
 6) 登录并部署  
    ```bash
    wrangler login
-   npm run deploy  # 或 wrangler deploy
+   npm run deploy  # 或 wrangler deploy；首次可直接 npm run deploy:auto
    ```
 7) 验证  
    ```bash
