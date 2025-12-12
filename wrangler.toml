@@ -2,7 +2,7 @@ name = "nodecrypt"
 main = "worker/index.js"
 compatibility_date = "2024-09-23"
 compatibility_flags = ["nodejs_compat"]
-account_id = "REPLACE_WITH_ACCOUNT_ID"
+account_id = "7638d434c539b37415fea565654cc614"
 
 # 配置静态资源
 [assets]
@@ -15,7 +15,7 @@ binding = "ASSETS"
 # Replace database_id with your actual D1 database id before deploy
 binding = "DB"
 database_name = "nodecrypt-db"
-database_id = "REPLACE_WITH_D1_ID"
+database_id = "8b918b0d-ad7b-4904-ad93-7cac4040a1cc"
 
 [durable_objects]
 bindings = [
