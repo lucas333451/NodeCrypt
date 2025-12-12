@@ -11,6 +11,16 @@ const ROOT = path.resolve(__dirname, '..');
 const TOML_PATH = path.join(ROOT, 'wrangler.toml');
 const PLACEHOLDER = 'REPLACE_WITH_D1_ID';
 const ACCOUNT_PLACEHOLDER = 'REPLACE_WITH_ACCOUNT_ID';
+
+// Accept lowercase env names (some platforms disallow uppercase)
+if (process.env.id && !process.env.ACCOUNT_ID) process.env.ACCOUNT_ID = process.env.id;
+if (process.env.cf_account_id && !process.env.CF_ACCOUNT_ID) process.env.CF_ACCOUNT_ID = process.env.cf_account_id;
+if (process.env.d1_id && !process.env.D1_ID) process.env.D1_ID = process.env.d1_id;
+if (process.env.d1_database_id && !process.env.D1_DATABASE_ID) process.env.D1_DATABASE_ID = process.env.d1_database_id;
+if (process.env.token && !process.env.CLOUDFLARE_API_TOKEN) process.env.CLOUDFLARE_API_TOKEN = process.env.token;
+if (process.env.mail && !process.env.MAIL_FROM) process.env.MAIL_FROM = process.env.mail;
+if (process.env.d1_location && !process.env.D1_LOCATION) process.env.D1_LOCATION = process.env.d1_location;
+
 const ENV_ID = process.env.D1_ID || process.env.D1_DATABASE_ID;
 const ENV_ACCOUNT_ID = process.env.ACCOUNT_ID || process.env.CF_ACCOUNT_ID;
 const ENV_LOCATION = process.env.D1_LOCATION || 'weur'; // default region hint
